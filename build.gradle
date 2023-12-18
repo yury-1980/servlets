@@ -10,9 +10,9 @@ group = 'ru.clevertec'
 version = '1.0-SNAPSHOT'
 
 compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
+//tasks.withType(JavaCompile).configureEach {
+//    options.encoding = 'UTF-8'
+//}
 
 java {
     sourceCompatibility = JavaLanguageVersion.of(17)
@@ -67,8 +67,8 @@ liquibase {
         main {
             changelogFile 'src/main/resources/db/changelog/master.yaml' // Путь к файлу changelog
             url 'jdbc:postgresql://localhost:5432/Cache' // URL вашей базы данных
-            username 'postgres' // Имя пользователя базы данных
-            password 'postgres' // Пароль пользователя базы данных
+            username 'postgres'
+            password 'postgres'
         }
     }
 }

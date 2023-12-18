@@ -7,16 +7,12 @@ import ru.clevertec.dao.ClientDao;
 import ru.clevertec.dao.ConnectionPoolManager;
 import ru.clevertec.dao.impl.ClientDaoImpl;
 import ru.clevertec.dto.ClientDto;
-import ru.clevertec.entity.Client;
-import ru.clevertec.exception.ClientNotFoundException;
 import ru.clevertec.gson.LocalDateAdapter;
 import ru.clevertec.gson.LocalDateSerializer;
 import ru.clevertec.gson.OffsetDateTimeAdapter;
 import ru.clevertec.gson.OffsetDateTimeSerializer;
 import ru.clevertec.mapper.MapperClient;
 import ru.clevertec.mapper.MapperClientImpl;
-import ru.clevertec.serializator.SerializatorXML;
-import ru.clevertec.serializator.impl.SerializatorXMLImpl;
 import ru.clevertec.service.ClientService;
 import ru.clevertec.service.impl.ClientServiceImpl;
 import ru.clevertec.valid.Validator;
@@ -26,7 +22,6 @@ import ru.clevertec.writer.impl.WriterInPdfImpl;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Slf4j
 public class Main {
@@ -54,7 +49,7 @@ public class Main {
                 .gson(gson)
                 .build();
 
-        // 1. Создание объекта.
+     /*   // 1. Создание объекта.
         Client clientFirst = clientService.create(clientDto);
         json = gson.toJson(clientFirst);
         System.out.println("clientFirst = " + json);
@@ -87,13 +82,16 @@ public class Main {
         String serialize = serializatorXML.serialize(clientDtoTwo);
         System.out.println("serialize = " + serialize);
         outputFilePath = "ResoultSerializatorXML.pdf";
-        writerInPdf.write(serialize, filePath, outputFilePath);
+        writerInPdf.write(serialize, filePath, outputFilePath);*/
 
-        // 4. Получение заданного кол-ва объектов
-        List<ClientDto> serviceByAll = clientService.findByAll(30);
-        json = gson.toJson(serviceByAll);
-        System.out.println("serviceByAll = " + json);
+     /*   // 4. Получение заданного кол-ва объектов
+        List<ClientDto> serviceByAll = clientService.findByAll();
+//        json = gson.toJson(serviceByAll);
+//        System.out.println("serviceByAll = " + json);
+        for (ClientDto dto : serviceByAll){
+            System.out.println("dto = " + dto);
+        }
         outputFilePath = "ResoultFindByAll.pdf";
-        writerInPdf.write(serviceByAll, filePath, outputFilePath);
+        writerInPdf.write(serviceByAll, filePath, outputFilePath);*/
     }
 }
