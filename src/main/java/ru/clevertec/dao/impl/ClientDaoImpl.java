@@ -1,6 +1,5 @@
 package ru.clevertec.dao.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.clevertec.dao.ClientDao;
 import ru.clevertec.dao.ConnectionPoolManager;
@@ -18,10 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@AllArgsConstructor
 public class ClientDaoImpl implements ClientDao {
-
-    private ConnectionPoolManager connectionPoolManager;
 
     @Override
     public Optional<Client> findById(long id) {
@@ -31,8 +27,8 @@ public class ClientDaoImpl implements ClientDao {
         Client client = null;
 
         try {
-            connection = connectionPoolManager.getConnection();
-            preparedStatement = connection.prepareStatement(RequestsSQL.GET_CLIENT_ID);
+            connection = ConnectionPoolManager.getConnection();
+            preparedStatement =  connection.prepareStatement(RequestsSQL.GET_CLIENT_ID);
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -64,7 +60,7 @@ public class ClientDaoImpl implements ClientDao {
         Client client;
 
         try {
-            connection = connectionPoolManager.getConnection();
+            connection = ConnectionPoolManager.getConnection();
             preparedStatement = connection.prepareStatement(RequestsSQL.GET_CLIENT_ALL);
             preparedStatement.setLong(1, 0);
             resultSet = preparedStatement.executeQuery();
@@ -97,7 +93,7 @@ public class ClientDaoImpl implements ClientDao {
         int lastId = 0;
 
         try {
-            connection = connectionPoolManager.getConnection();
+            connection = ConnectionPoolManager.getConnection();
             preparedStatement = connection.prepareStatement(RequestsSQL.CREATE_CLIENT);
             preparedStatement.setString(1, client.getClientName());
             preparedStatement.setString(2, client.getFamilyName());
@@ -121,7 +117,7 @@ public class ClientDaoImpl implements ClientDao {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connectionPoolManager.releaseConnection(connection);
+                    ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
                 log.info("Not successful!");
@@ -136,7 +132,7 @@ public class ClientDaoImpl implements ClientDao {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connectionPoolManager.getConnection();
+            connection = ConnectionPoolManager.getConnection();
             preparedStatement = connection.prepareStatement(RequestsSQL.UPDATE_CLIENT);
             preparedStatement.setString(1, client.getClientName());
             preparedStatement.setString(2, client.getFamilyName());
@@ -157,7 +153,7 @@ public class ClientDaoImpl implements ClientDao {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connectionPoolManager.releaseConnection(connection);
+                    ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
                 log.info("Not successful!");
@@ -172,7 +168,7 @@ public class ClientDaoImpl implements ClientDao {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = connectionPoolManager.getConnection();
+            connection = ConnectionPoolManager.getConnection();
             preparedStatement = connection.prepareStatement(RequestsSQL.DELETE_ID);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -187,7 +183,7 @@ public class ClientDaoImpl implements ClientDao {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connectionPoolManager.releaseConnection(connection);
+                    ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
                 log.info("Not successful!");
@@ -206,7 +202,7 @@ public class ClientDaoImpl implements ClientDao {
                 preparedStatement.close();
             }
             if (connection != null) {
-                connectionPoolManager.releaseConnection(connection);
+                ConnectionPoolManager.releaseConnection(connection);
             }
         } catch (SQLException e) {
             System.out.println("Not successful!");

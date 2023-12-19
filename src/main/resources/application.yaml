@@ -1,0 +1,12 @@
+liquibase:
+  change-log: /db/changelog/master.yaml
+  enabled: true
+  default-schema: public
+  user: postgres
+  password: postgres
+  url: jdbc:postgresql://localhost:5432/Cache
+  driver: org.postgresql.Driver
+  maxTotalConnections: 5
+  maxIdleConnections: 4
+Cache:
+  capacity: 5

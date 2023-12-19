@@ -10,9 +10,6 @@ group = 'ru.clevertec'
 version = '1.0-SNAPSHOT'
 
 compileJava.options.encoding = 'UTF-8'
-//tasks.withType(JavaCompile).configureEach {
-//    options.encoding = 'UTF-8'
-//}
 
 java {
     sourceCompatibility = JavaLanguageVersion.of(17)
@@ -32,15 +29,13 @@ ext {
 
 dependencies {
     implementation 'org.codehaus.mojo:jaxb2-maven-plugin:3.1.0'
-//    implementation 'com.itextpdf:itextpdf:5.5.13.3'
     implementation 'com.itextpdf:itext7-core:7.2.4'
-
 
     implementation 'ch.qos.logback:logback-classic:1.4.11'
     implementation 'org.aspectj:aspectjrt:1.9.19'
     implementation "org.postgresql:postgresql:${postgresqlVersion}"
-    implementation 'org.yaml:snakeyaml:2.0'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
 
     implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
     implementation 'javax.el:javax.el-api:3.0.1-b06'
@@ -49,6 +44,8 @@ dependencies {
 
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    implementation 'org.liquibase:liquibase-core:4.23.1'
 
     liquibaseRuntime 'info.picocli:picocli:4.6.3'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.23.1'
@@ -61,19 +58,6 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 }
-
-liquibase {
-    activities {
-        main {
-            changelogFile 'src/main/resources/db/changelog/master.yaml' // Путь к файлу changelog
-            url 'jdbc:postgresql://localhost:5432/Cache' // URL вашей базы данных
-            username 'postgres'
-            password 'postgres'
-        }
-    }
-}
-
-compileJava.dependsOn(update)
 
 test {
     useJUnitPlatform()

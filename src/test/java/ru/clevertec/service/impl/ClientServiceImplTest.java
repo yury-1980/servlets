@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.clevertec.dao.ClientDao;
-import ru.clevertec.dao.ConnectionPoolManager;
 import ru.clevertec.dao.impl.ClientDaoImpl;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
@@ -49,7 +48,7 @@ class ClientServiceImplTest {
                 .birthDay(LocalDate.parse("2000-01-01"))
                 .build();
 
-        clientDao = new ClientDaoImpl(new ConnectionPoolManager());
+        clientDao = new ClientDaoImpl();
         mapperClient = new MapperClientImpl();
         validator = new ValidatorImpl();
         service = new ClientServiceImpl(clientDao, mapperClient, validator);

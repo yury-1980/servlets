@@ -4,4 +4,4 @@ databaseChangeLog:
       author: bank
       changes:
         - sqlFile:
-            path: src/main/resources/db/changelog/createTable.sql
+            path: /db/changelog/createTable.sql

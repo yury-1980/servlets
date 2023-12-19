@@ -1,38 +1,42 @@
 package ru.clevertec.dao;
 
-import org.apache.commons.dbcp2.BasicDataSource;
+import com.zaxxer.hikari.HikariDataSource;
 import ru.clevertec.reader.ReaderConfig;
 import ru.clevertec.reader.impl.ReaderConfigImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.Properties;
 
 public class ConnectionPoolManager {
 
-    private static final BasicDataSource dataSource = new BasicDataSource();
+    private static final String CAPACITY = "capacity";
     private static final String URL = "url";
-    private static final String USER_NAME = "username";
+    private static final String USER_NAME = "user";
     private static final String PASSWORD = "password";
     private static final String DRIVER = "driver";
-    private static final String CONFIG_DB = "config.yaml";
-    private final ReaderConfig readerConfig = new ReaderConfigImpl();
-    private final Map<String, String> STRING_MAP = readerConfig.readerFileYaml(CONFIG_DB);
+    private static final String CONFIG_DB = "application.yaml";
+    private static final ReaderConfig readerConfig = new ReaderConfigImpl();
+    private static final Properties properties = readerConfig.readerFileYaml(CONFIG_DB);
+    private static final HikariDataSource dataSource = new HikariDataSource();
 
-    {
-
-        dataSource.setUrl(STRING_MAP.get(URL));
-        dataSource.setUsername(STRING_MAP.get(USER_NAME));
-        dataSource.setPassword(STRING_MAP.get(PASSWORD));
-        dataSource.setDriverClassName(STRING_MAP.get(DRIVER));
-        dataSource.setDefaultAutoCommit(false);
+    static {
+        dataSource.setJdbcUrl(properties.getProperty(URL));
+        dataSource.setUsername(properties.getProperty(USER_NAME));
+        dataSource.setPassword(properties.getProperty(PASSWORD));
+        dataSource.setDriverClassName(properties.getProperty(DRIVER));
+        dataSource.setAutoCommit(false);
     }
 
-    public Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    public void releaseConnection(Connection connection) throws SQLException {
+    public static int getCapacity() {
+        return Integer.parseInt(properties.getProperty(CAPACITY));
+    }
+
+    public static void releaseConnection(Connection connection) throws SQLException {
         if (connection != null) {
             connection.close();
         }

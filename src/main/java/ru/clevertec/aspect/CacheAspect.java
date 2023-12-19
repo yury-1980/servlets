@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.yaml.snakeyaml.Yaml;
 import ru.clevertec.cache.LRUCache;
 import ru.clevertec.cache.impl.LRUCacheImpl;
 import ru.clevertec.dao.ClientDao;
@@ -19,28 +18,13 @@ import ru.clevertec.mapper.MapperClientImpl;
 import ru.clevertec.valid.Validator;
 import ru.clevertec.valid.impl.ValidatorImpl;
 
-import java.io.InputStream;
-import java.util.Map;
-
 @Slf4j
 @Aspect
 public class CacheAspect {
 
-    private static final String CONFIG_CACHE = "configCache.yaml";
-    private static final String CAPACITY = "capacity";
-
-    private static Map<String, Integer> readCapacityYaml() {
-
-        Yaml yaml = new Yaml();
-        InputStream inputStream = CacheAspect.class.getClassLoader()
-                .getResourceAsStream(CONFIG_CACHE);
-
-        return yaml.load(inputStream);
-    }
-
-    private static final Map<String, Integer> STRING_INTEGER_MAP = readCapacityYaml();
-    private final LRUCache<Long, Client> cache = new LRUCacheImpl<>(STRING_INTEGER_MAP.get(CAPACITY));
-    private final ClientDao clientDao = new ClientDaoImpl(new ConnectionPoolManager());
+    private static final int CAPACITY = ConnectionPoolManager.getCapacity();
+    private final LRUCache<Long, Client> cache = new LRUCacheImpl<>(CAPACITY);
+    private final ClientDao clientDao = new ClientDaoImpl();
     private final MapperClient mapper = new MapperClientImpl();
     private final Validator validator = new ValidatorImpl();
 

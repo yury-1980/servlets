@@ -1,21 +1,21 @@
 package ru.clevertec.reader.impl;
 
-import org.yaml.snakeyaml.Yaml;
-import ru.clevertec.dao.ConnectionPoolManager;
 import ru.clevertec.reader.ReaderConfig;
 
-import java.io.InputStream;
-import java.util.Map;
+import java.io.IOException;
+import java.util.Properties;
 
 public class ReaderConfigImpl implements ReaderConfig {
 
+    private final Properties properties = new Properties();
+
     @Override
-    public Map<String, String> readerFileYaml(String name) {
-
-        Yaml yaml = new Yaml();
-        InputStream inputStream = ConnectionPoolManager.class.getClassLoader()
-                .getResourceAsStream(name);
-
-        return yaml.load(inputStream);
+    public Properties readerFileYaml(String name) {
+        try {
+            properties.load(ReaderConfigImpl.class.getClassLoader().getResourceAsStream(name));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return properties;
     }
 }

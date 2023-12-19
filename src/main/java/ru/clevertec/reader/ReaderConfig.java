@@ -1,8 +1,8 @@
 package ru.clevertec.reader;
 
-import java.util.Map;
+import java.util.Properties;
 
 public interface ReaderConfig {
 
-    Map<String, String> readerFileYaml(String name);
+    Properties readerFileYaml(String name);
 }
