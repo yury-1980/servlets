@@ -14,6 +14,7 @@ import ru.clevertec.valid.Validator;
 import ru.clevertec.valid.impl.ValidatorImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 class ClientServiceImplTest {
 
@@ -24,6 +25,8 @@ class ClientServiceImplTest {
     ClientDto clientDto;
     ClientDto expected;
     ClientService service;
+    Long pageNum;
+    Long pageSize;
 
     @BeforeEach
     void setUp() {
@@ -48,10 +51,13 @@ class ClientServiceImplTest {
                 .birthDay(LocalDate.parse("2000-01-01"))
                 .build();
 
+        pageNum = 1L;
+        pageSize = 1L;
         clientDao = new ClientDaoImpl();
         mapperClient = new MapperClientImpl();
         validator = new ValidatorImpl();
         service = new ClientServiceImpl(clientDao, mapperClient, validator);
+
     }
 
     @Test
@@ -68,17 +74,17 @@ class ClientServiceImplTest {
         Assertions.assertEquals(expected, actual);
     }
 
- /*   @Test
+    @Test
     void shouldFindByAllClientDto() {
-        List<ClientDto> actualList = service.findByAll();
+        List<ClientDto> actualList = service.findByAll(pageNum, pageSize);
         ClientDto[] actual = actualList.toArray(new ClientDto[0]);
 
 
-        List<ClientDto> dtoList = service.findByAll();
+        List<ClientDto> dtoList = service.findByAll(pageNum, pageSize);
         ClientDto[] expected = dtoList.toArray(new ClientDto[0]);
 
         Assertions.assertArrayEquals(expected, actual);
-    }*/
+    }
 
     @Test
     void shouldCreateClientAndReturnClientDto() {

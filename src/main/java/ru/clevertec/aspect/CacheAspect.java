@@ -1,11 +1,13 @@
 package ru.clevertec.aspect;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import ru.clevertec.cache.LRUCache;
 import ru.clevertec.cache.impl.LRUCacheImpl;
+import ru.clevertec.config.Config;
 import ru.clevertec.dao.ClientDao;
 import ru.clevertec.dao.ConnectionPoolManager;
 import ru.clevertec.dao.impl.ClientDaoImpl;
@@ -17,6 +19,8 @@ import ru.clevertec.mapper.MapperClient;
 import ru.clevertec.mapper.MapperClientImpl;
 import ru.clevertec.valid.Validator;
 import ru.clevertec.valid.impl.ValidatorImpl;
+import ru.clevertec.writer.WriterInPdf;
+import ru.clevertec.writer.impl.WriterInPdfImpl;
 
 @Slf4j
 @Aspect
@@ -27,26 +31,38 @@ public class CacheAspect {
     private final ClientDao clientDao = new ClientDaoImpl();
     private final MapperClient mapper = new MapperClientImpl();
     private final Validator validator = new ValidatorImpl();
+    private static final String RESULT_FIND_BY_ID = "ResoultFindById.pdf";
+    private static final String CLEVERTEC_TEMPLATE = "Clevertec_Template.pdf";
 
     @Around("execution(* ru.clevertec.service.impl.ClientServiceImpl.findById(..))")
     public ClientDto aroundFindById(ProceedingJoinPoint joinPoint) throws ClientNotFoundException {
+        Gson json = Config.getConfig().getJson();
+        String outputFilePath = RESULT_FIND_BY_ID;
+        String filePath = CLEVERTEC_TEMPLATE;
+        WriterInPdf writerInPdf = WriterInPdfImpl.builder()
+                .gson(json)
+                .build();
+
         Object[] args = joinPoint.getArgs();
         Long id = (Long) args[0];
         Client client = cache.get(id);
 
         if (client != null) {
+            writerInPdf.write(client, filePath, outputFilePath);
+
             return mapper.toClientDto(client);
 
         } else {
-            try {
-                client = clientDao.findById(id).get();
-                cache.put(client.getId(), client);
 
-                return mapper.toClientDto(client);
+                if (clientDao.findById(id).isPresent()) {
+                    client = clientDao.findById(id).get();
+                    cache.put(client.getId(), client);
+                    writerInPdf.write(client, filePath, outputFilePath);
 
-            } catch (RuntimeException e) {
-                throw new ClientNotFoundException(id);
-            }
+                    return mapper.toClientDto(client);
+                } else {
+                    throw new ClientNotFoundException(id);
+                }
         }
     }
 

@@ -1,7 +1,7 @@
 package ru.clevertec.servlet;
 
 import com.google.gson.Gson;
-import lombok.extern.slf4j.Slf4j;
+import ru.clevertec.config.Config;
 import ru.clevertec.config.ConfigurationListener;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
@@ -16,31 +16,30 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@Slf4j
 @WebServlet("/v1/clients/*")
 public class ClientServlet extends HttpServlet {
 
     private static final String ID = "id";
-    private static final String NUM_PAGE = "numPage";
+    private static final String PAGE_NUM = "pageNum";
     private static final String PAGE_SIZE = "pageSize";
     private final ClientService clientService = ConfigurationListener.getClientService();
-    private final Gson json = ConfigurationListener.getJson();
+    private final Gson json = Config.getConfig().getJson();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter(ID);
 
         if (id != null) {
-            ClientDto byId = clientService.findById(Long.parseLong(id));
+            ClientDto clientDto = clientService.findById(Long.parseLong(id));
 
             try (PrintWriter respWriter = resp.getWriter()) {
-                respWriter.write(json.toJson(byId));
+                respWriter.write(json.toJson(clientDto));
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
         } else {
-            Long numPage = Long.parseLong(req.getParameter(NUM_PAGE));
-            Long pageSize = Long.parseLong(req.getParameter(PAGE_SIZE));
-            List<ClientDto> serviceByAll = clientService.findByAll(numPage, pageSize);
+            long pageNum = Long.parseLong(req.getParameter(PAGE_NUM));
+            long pageSize = Long.parseLong(req.getParameter(PAGE_SIZE));
+            List<ClientDto> serviceByAll = clientService.findByAll(pageNum, pageSize);
 
             try (PrintWriter out = resp.getWriter()) {
                 out.write(json.toJson(serviceByAll));
@@ -57,7 +56,7 @@ public class ClientServlet extends HttpServlet {
 
         try (PrintWriter respWriter = resp.getWriter()) {
             respWriter.write(json.toJson(newClient));
-            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_CREATED);
         }
     }
 
@@ -81,7 +80,7 @@ public class ClientServlet extends HttpServlet {
 
         try (PrintWriter respWriter = resp.getWriter()) {
             respWriter.write("Удаление успешно!");
-            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
 }

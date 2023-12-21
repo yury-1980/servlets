@@ -16,24 +16,24 @@ public class ConnectionPoolManager {
     private static final String PASSWORD = "password";
     private static final String DRIVER = "driver";
     private static final String CONFIG_DB = "application.yaml";
-    private static final ReaderConfig readerConfig = new ReaderConfigImpl();
-    private static final Properties properties = readerConfig.readerFileYaml(CONFIG_DB);
-    private static final HikariDataSource dataSource = new HikariDataSource();
+    private static final ReaderConfig READER_CONFIG = new ReaderConfigImpl();
+    private static final Properties PROPERTIES = READER_CONFIG.readerFileYaml(CONFIG_DB);
+    private static final HikariDataSource DATA_SOURCE = new HikariDataSource();
 
     static {
-        dataSource.setJdbcUrl(properties.getProperty(URL));
-        dataSource.setUsername(properties.getProperty(USER_NAME));
-        dataSource.setPassword(properties.getProperty(PASSWORD));
-        dataSource.setDriverClassName(properties.getProperty(DRIVER));
-        dataSource.setAutoCommit(false);
+        DATA_SOURCE.setJdbcUrl(PROPERTIES.getProperty(URL));
+        DATA_SOURCE.setUsername(PROPERTIES.getProperty(USER_NAME));
+        DATA_SOURCE.setPassword(PROPERTIES.getProperty(PASSWORD));
+        DATA_SOURCE.setDriverClassName(PROPERTIES.getProperty(DRIVER));
+        DATA_SOURCE.setAutoCommit(false);
     }
 
     public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        return DATA_SOURCE.getConnection();
     }
 
     public static int getCapacity() {
-        return Integer.parseInt(properties.getProperty(CAPACITY));
+        return Integer.parseInt(PROPERTIES.getProperty(CAPACITY));
     }
 
     public static void releaseConnection(Connection connection) throws SQLException {

@@ -1,11 +1,12 @@
-# Cache
+# Servlets
 
 ## Описание
 
-### Добавлена возможность записи результатов запрорсов в файл pdf (в корень проекта)
+### Есть возможность записи результата Get запрорса в файл pdf (в корень проекта)
 
 ##### Проект создан с использованием java 17.
 
+Настройки находятся в файле "application.yaml".
 В проекте реализованы CRUD операции, синхронизированные с кешем, на основе алгоритма LRU, через аспект(aspectj).
 В проекте реализовано автоматическое создание и заполнение данными таблиц, с помощью Liquibase.
 
@@ -17,17 +18,25 @@
 
 #### Примеры:
 
-POST - запрос: ClientDto clientDto = new ClientDto("Пётр", "Петров", "Петрович", LocalDate.parse("2000-01-01"));
-ответ:
+POST - запрос: http://localhost:8080//v1/clients
 {
-"id": 4,
-"clientName": "Пётр",
-"familyName": "Петров",
-"surName": "Петрович",
+"clientName": "Мария",
+"familyName": "Альбертович",
+"surName": "Николаевич",
 "birthDay": "2000-01-01"
 }
 
-GET - запрос: ClientDto clientDtoFirst = clientService.findById(1);
+ответ:
+{
+"id": 5,
+"clientName": "Мария",
+"familyName": "Альбертович",
+"surName": "Николаевич",
+"birthDay": "2000-01-01"
+}
+
+GET - запрос: http://localhost:8080/v1/clients?id=1
+
 ответ:
 {
 "clientName": "Пётр",
@@ -36,8 +45,22 @@ GET - запрос: ClientDto clientDtoFirst = clientService.findById(1);
 "birthDay": "2001-02-02"
 }
 
-PUT - запрос: Client update = clientService.update(1, clientDtoTwo);
-ответ: update = Client(id=0, clientName=Николай, familyName=Николаев, surName=Николаевич, birthDay=2000-01-01)
+PUT - запрос: http://localhost:8080/v1/clients?id=78
+{
+"clientName": "Ирина",
+"familyName": "Василькова",
+"surName": "Владимировна",
+"birthDay": "2000-01-01"
+}
+
+ответ:
+{
+"id": 78,
+"clientName": "Ирина",
+"familyName": "Василькова",
+"surName": "Владимировна",
+"birthDay": "2000-01-01"
+}
 
 ##### Метод для получения информации в виде XML:
 

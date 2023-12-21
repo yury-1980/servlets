@@ -19,7 +19,6 @@ import com.itextpdf.layout.properties.TextAlignment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import ru.clevertec.reader.Font;
 import ru.clevertec.writer.WriterInPdf;
 
 import java.io.IOException;
@@ -34,6 +33,7 @@ public class WriterInPdfImpl implements WriterInPdf {
     private Gson gson;
     private final LocalDateTime dateTime = LocalDateTime.now();
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String FONT = "c:/Windows/Fonts/cambriai.ttf";
     private String date;
 
     /**
@@ -52,9 +52,9 @@ public class WriterInPdfImpl implements WriterInPdf {
             document.add(new Paragraph(str));
             document.add(new Paragraph(date).setTextAlignment(TextAlignment.RIGHT));
 
-            log.info("PDF-документ успешно изменен.");
+            log.info("The PDF document has been successfully modified.");
         } catch (IOException e) {
-            log.error("Ошибка при изменении PDF-документа: " + e.getMessage());
+            log.error("Error when editing PDF document! : " + e.getMessage());
         }
     }
 
@@ -77,9 +77,9 @@ public class WriterInPdfImpl implements WriterInPdf {
             document.add(new Paragraph(json));
             document.add(new Paragraph(date).setTextAlignment(TextAlignment.RIGHT));
 
-            log.info("PDF-документ успешно изменен.");
+            log.info("The PDF document has been successfully modified.");
         } catch (IOException e) {
-            log.error("Ошибка при изменении PDF-документа: " + e.getMessage());
+            log.error("Error when editing PDF document! : " + e.getMessage());
         }
     }
 
@@ -114,9 +114,9 @@ public class WriterInPdfImpl implements WriterInPdf {
             }
             document.add(new Paragraph(date).setTextAlignment(TextAlignment.RIGHT));
 
-            log.info("PDF-документ успешно изменен.");
+            log.info("The PDF document has been successfully modified.");
         } catch (IOException e) {
-            log.error("Ошибка при изменении PDF-документа: " + e.getMessage());
+            log.error("Error when editing PDF document! : " + e.getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ public class WriterInPdfImpl implements WriterInPdf {
     private Document docPdf(PdfDocument pdfDocument) throws IOException {
         date = dateTime.format(FORMATTER);
         pdfDocument.setDefaultPageSize(PageSize.A4);
-        PdfFont font = PdfFontFactory.createFont(Font.BKANT.getPath());
+        PdfFont font = PdfFontFactory.createFont(FONT);
         Document document = new Document(pdfDocument);
 
         document.setFont(font)

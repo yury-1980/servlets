@@ -30,7 +30,7 @@ class LRUCacheImplTest {
     @Test
     void shouldGetObject() {
         lruCache.put(expected.getId(), expected);
-        Client actual = (Client) lruCache.get(1L);
+        Client actual = lruCache.get(1L);
 
         Assertions.assertEquals(expected, actual);
     }
@@ -38,7 +38,7 @@ class LRUCacheImplTest {
     @Test
     void shouldPutAndGet() {
         lruCache.put(expected.getId(), expected);
-        Client actual = (Client) lruCache.get(1L);
+        Client actual = lruCache.get(1L);
 
         Assertions.assertEquals(expected, actual);
     }

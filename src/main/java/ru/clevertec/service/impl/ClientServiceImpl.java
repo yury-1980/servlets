@@ -23,6 +23,7 @@ public class ClientServiceImpl implements ClientService {
     private ClientDao clientDao;
     private MapperClient mapperClient;
     private Validator validator;
+
     private static final long DEFAULT_PAGE_SIZE = 20L;
     private static final long DEFAULT_NUM_PAGE = 1L;
 
@@ -42,20 +43,22 @@ public class ClientServiceImpl implements ClientService {
     /**
      * Возвращает из Б.Д. заданное количество клиентов.
      *
+     * @param pageNum  Номер страницы.
+     * @param pageSize Размер страницы.
      * @return Возвращает найденное количество клиентов и помещает их в List.
      */
     @Override
-    public List<ClientDto> findByAll(Long numPage, Long pageSize) {
+    public List<ClientDto> findByAll(Long pageNum, Long pageSize) {
 
         if (pageSize == null || pageSize <= 0) {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
-        if (numPage == null || numPage <= 0) {
-            numPage = DEFAULT_NUM_PAGE;
+        if (pageNum == null || pageNum <= 0) {
+            pageNum = DEFAULT_NUM_PAGE;
         }
 
-        long numSkip = (numPage - 1L) * pageSize;
+        long numSkip = (pageNum - 1L) * pageSize;
 
         return clientDao.findByAll().stream()
                 .skip(numSkip)
