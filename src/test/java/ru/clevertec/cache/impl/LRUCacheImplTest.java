@@ -8,8 +8,6 @@ import ru.clevertec.entity.Client;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class LRUCacheImplTest {
 
     LRUCache<Long, Client> lruCache;
@@ -49,6 +47,6 @@ class LRUCacheImplTest {
         lruCache.remove(1L);
         Client actual = lruCache.get(1L);
 
-        assertNull(actual);
+        Assertions.assertNull(actual);
     }
 }

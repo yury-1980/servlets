@@ -1,11 +1,14 @@
 package ru.clevertec.cache.impl;
 
+import lombok.Data;
+
+@Data
 public class Node<V> {
 
-    long key;
-    V value;
-    Node<V> prev;
-    Node<V> next;
+    private long key;
+    private V value;
+    private Node<V> prev;
+    private Node<V> next;
 
     public Node(long key, V value) {
         this.key = key;

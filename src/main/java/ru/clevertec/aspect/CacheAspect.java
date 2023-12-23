@@ -36,19 +36,12 @@ public class CacheAspect {
 
     @Around("execution(* ru.clevertec.service.impl.ClientServiceImpl.findById(..))")
     public ClientDto aroundFindById(ProceedingJoinPoint joinPoint) throws ClientNotFoundException {
-        Gson json = Config.getConfig().getJson();
-        String outputFilePath = RESULT_FIND_BY_ID;
-        String filePath = CLEVERTEC_TEMPLATE;
-        WriterInPdf writerInPdf = WriterInPdfImpl.builder()
-                .gson(json)
-                .build();
-
         Object[] args = joinPoint.getArgs();
         Long id = (Long) args[0];
         Client client = cache.get(id);
 
         if (client != null) {
-            writerInPdf.write(client, filePath, outputFilePath);
+            getWriterInPdf(client);
 
             return mapper.toClientDto(client);
 
@@ -57,13 +50,21 @@ public class CacheAspect {
                 if (clientDao.findById(id).isPresent()) {
                     client = clientDao.findById(id).get();
                     cache.put(client.getId(), client);
-                    writerInPdf.write(client, filePath, outputFilePath);
+                    getWriterInPdf(client);
 
                     return mapper.toClientDto(client);
                 } else {
                     throw new ClientNotFoundException(id);
                 }
         }
+    }
+
+    private <T> void getWriterInPdf(T v) {
+        Gson json = Config.getConfig().getJson();
+        WriterInPdf writerInPdf = WriterInPdfImpl.builder()
+                .gson(json)
+                .build();
+        writerInPdf.write(v, CLEVERTEC_TEMPLATE, RESULT_FIND_BY_ID);
     }
 
     @Around("execution(* ru.clevertec.service.impl.ClientServiceImpl.create(..))")

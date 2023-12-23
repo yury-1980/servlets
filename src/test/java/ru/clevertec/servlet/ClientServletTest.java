@@ -28,7 +28,7 @@ class ClientServletTest {
     private HttpServletResponse mockResponse;
     private ClientServlet clientServlet;
     private PrintWriter printWriter;
-    String ID = "id";
+    private final String ID = "id";
 
     @BeforeEach
     void setUp() {
@@ -38,7 +38,7 @@ class ClientServletTest {
     }
 
     @Test
-    void shouldReturnStatusDoGet() throws IOException {
+    void shouldReturnStatusOkDoGet() throws IOException {
         // given
         when(mockRequest.getParameter(ID))
                 .thenReturn("3");
@@ -51,6 +51,52 @@ class ClientServletTest {
         // then
         verify(mockResponse)
                 .setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Test
+    void shouldReturnStatusOkDoGetAll() throws IOException {
+        // given
+        String pageNum = "pageNum";
+        String pageSize = "pageSize";
+
+        when(mockRequest.getParameter(ID))
+                .thenReturn(null);
+        when(mockRequest.getParameter(pageNum))
+                .thenReturn("1");
+        when(mockRequest.getParameter(pageSize))
+                .thenReturn("1");
+        when(mockResponse.getWriter())
+                .thenReturn(printWriter);
+
+        // when
+        clientServlet.doGet(mockRequest, mockResponse);
+
+        // then
+        verify(mockResponse)
+                .setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Test
+    void shouldReturnStatusNotFoundDoGet() throws IOException {
+        // given
+        String pageNum = "pageNum";
+        String pageSize = "pageSize";
+
+        when(mockRequest.getParameter(ID))
+                .thenReturn(null);
+        when(mockRequest.getParameter(pageNum))
+                .thenReturn(null);
+        when(mockRequest.getParameter(pageSize))
+                .thenReturn(null);
+        when(mockResponse.getWriter())
+                .thenReturn(printWriter);
+
+        // when
+        clientServlet.doGet(mockRequest, mockResponse);
+
+        // then
+        verify(mockResponse)
+                .setStatus(HttpServletResponse.SC_NOT_FOUND);
     }
 
     @Test
@@ -72,7 +118,7 @@ class ClientServletTest {
     }
 
     @Test
-    void shouldReturnStatusUpdatedoPut() throws IOException {
+    void shouldReturnStatusUpdateDoPut() throws IOException {
         // given
         String str = "{\"clientName\":\"Пётр\",\"familyName\":\"Петров\",\"surName\":\"Петрович\",\"birthDay\":\"2000-01-01\"}";
         BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(str.getBytes())));
@@ -104,6 +150,6 @@ class ClientServletTest {
 
         // then
         verify(mockResponse)
-                .setStatus(HttpServletResponse.SC_NO_CONTENT);
+                .setStatus(HttpServletResponse.SC_OK);
     }
 }

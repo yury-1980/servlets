@@ -108,3 +108,4 @@ $RECYCLE.BIN/
 
 # Ignore Gradle build output directory
 build
+!/apache-tomcat-9.0.59/*

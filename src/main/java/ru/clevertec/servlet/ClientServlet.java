@@ -16,34 +16,39 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/v1/clients/*")
+@WebServlet("/v1/clients")
 public class ClientServlet extends HttpServlet {
 
     private static final String ID = "id";
     private static final String PAGE_NUM = "pageNum";
     private static final String PAGE_SIZE = "pageSize";
     private final ClientService clientService = ConfigurationListener.getClientService();
-    private final Gson json = Config.getConfig().getJson();
+    private final Gson json = Config.getConfig()
+            .getJson();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter(ID);
+        String pageNum = req.getParameter(PAGE_NUM);
+        String pageSize = req.getParameter(PAGE_SIZE);
 
-        if (id != null) {
-            ClientDto clientDto = clientService.findById(Long.parseLong(id));
+        try (PrintWriter respWriter = resp.getWriter()) {
 
-            try (PrintWriter respWriter = resp.getWriter()) {
+            if (id != null) {
+                ClientDto clientDto = clientService.findById(Long.parseLong(id));
+
                 respWriter.write(json.toJson(clientDto));
                 resp.setStatus(HttpServletResponse.SC_OK);
-            }
-        } else {
-            long pageNum = Long.parseLong(req.getParameter(PAGE_NUM));
-            long pageSize = Long.parseLong(req.getParameter(PAGE_SIZE));
-            List<ClientDto> serviceByAll = clientService.findByAll(pageNum, pageSize);
 
-            try (PrintWriter out = resp.getWriter()) {
-                out.write(json.toJson(serviceByAll));
+            } else if (pageNum != null && pageSize != null) {
+                List<ClientDto> serviceByAll = clientService.findByAll(Long.parseLong(pageNum), Long.parseLong(pageSize));
+
+                respWriter.write(json.toJson(serviceByAll));
                 resp.setStatus(HttpServletResponse.SC_OK);
+
+            } else {
+                respWriter.write(json.toJson("Ресурс не найден."));
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }
@@ -80,7 +85,7 @@ public class ClientServlet extends HttpServlet {
 
         try (PrintWriter respWriter = resp.getWriter()) {
             respWriter.write("Удаление успешно!");
-            resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            resp.setStatus(HttpServletResponse.SC_OK);
         }
     }
 }

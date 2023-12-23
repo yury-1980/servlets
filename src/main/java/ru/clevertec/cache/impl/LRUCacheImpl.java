@@ -9,10 +9,10 @@ import java.util.Map;
 @Data
 public class LRUCacheImpl<V> implements LRUCache<Long, V> {
 
-    Node<V> head;
-    Node<V> tail;
-    Map<Long, Node<V>> map;
-    int capacity;
+    private Node<V> head;
+    private Node<V> tail;
+    private Map<Long, Node<V>> map;
+    private int capacity;
 
     public LRUCacheImpl(int capacity) {
         this.capacity = capacity;
@@ -30,14 +30,14 @@ public class LRUCacheImpl<V> implements LRUCache<Long, V> {
         removeNode(item);
         addToTail(item);
 
-        return item.value;
+        return item.getValue();
     }
 
     @Override
     public void put(Long key, V value) {
         if (map.containsKey(key)) {
             Node<V> item = map.get(key);
-            item.value = value;
+            item.setValue(value);
 
             // Перемещаем в конец
             removeNode(item);
@@ -45,7 +45,7 @@ public class LRUCacheImpl<V> implements LRUCache<Long, V> {
         } else {
             if (map.size() >= capacity) {
                 // Удаляем голову
-                map.remove(head.key);
+                map.remove(head.getKey());
                 removeNode(head);
             }
 
@@ -65,26 +65,28 @@ public class LRUCacheImpl<V> implements LRUCache<Long, V> {
     }
 
     private void removeNode(Node<V> node) {
-        if (node.prev != null) {
-            node.prev.next = node.next;
+        if (node.getPrev() != null) {
+            node.getPrev()
+                    .setNext(node.getNext());
         } else {
-            head = node.next;
+            head = node.getNext();
         }
 
-        if (node.next != null) {
-            node.next.prev = node.prev;
+        if (node.getNext() != null) {
+            node.getNext()
+                    .setPrev(node.getPrev());
         } else {
-            tail = node.prev;
+            tail = node.getPrev();
         }
     }
 
     private void addToTail(Node<V> node) {
         if (tail != null) {
-            tail.next = node;
+            tail.setNext(node);
         }
 
-        node.prev = tail;
-        node.next = null;
+        node.setPrev(tail);
+        node.setNext(null);
         tail = node;
 
         if (head == null) {
