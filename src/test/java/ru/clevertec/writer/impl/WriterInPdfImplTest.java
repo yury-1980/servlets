@@ -9,11 +9,9 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
-import ru.clevertec.serializator.SerializatorXML;
-import ru.clevertec.serializator.impl.SerializatorXMLImpl;
-import ru.clevertec.writer.WriterInPdf;
+import ru.clevertec.util.writer.WriterInPdf;
+import ru.clevertec.util.writer.impl.WriterInPdfImpl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,29 +44,8 @@ class WriterInPdfImplTest {
     public static void setUp() {
         filePathExpected = "Clevertec_Template.pdf";
         outputFilePathExpected = "ResoultService.pdf";
-        writerInPdf = WriterInPdfImpl.builder().build();
-    }
-
-    @Test
-    void shouldWriteStringInPdf() {
-        // given
-        ClientDto clientDtoTwo = new ClientDto("Николай", "Николаев", "Николаевич",
-                LocalDate.parse("2000-01-01"));
-
-        SerializatorXML serializatorXML = new SerializatorXMLImpl();
-        String serializeExpected = serializatorXML.serialize(clientDtoTwo);
-
-        // when
-        writerInPdf.write(serializeExpected, filePathExpected, outputFilePathExpected);
-        Mockito.verify(writerInPdf)
-                .write(serializeCaptor.capture(), filePathCaptor.capture(), outputFilePathCaptor.capture());
-
-        // then
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(serializeExpected, serializeCaptor.getValue()),
-                () -> Assertions.assertEquals(filePathExpected, filePathCaptor.getValue()),
-                () -> Assertions.assertEquals(outputFilePathExpected, outputFilePathCaptor.getValue())
-        );
+        writerInPdf = WriterInPdfImpl.builder()
+                .build();
     }
 
     @Test
@@ -124,7 +101,8 @@ class WriterInPdfImplTest {
 
         // then
         Assertions.assertAll(
-                () -> Assertions.assertArrayEquals(expected, listCaptor.getValue().toArray(Client[]::new)),
+                () -> Assertions.assertArrayEquals(expected, listCaptor.getValue()
+                        .toArray(Client[]::new)),
                 () -> Assertions.assertEquals(filePathExpected, filePathCaptor.getValue()),
                 () -> Assertions.assertEquals(outputFilePathExpected, outputFilePathCaptor.getValue())
         );

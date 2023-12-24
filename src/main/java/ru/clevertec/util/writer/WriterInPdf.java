@@ -1,11 +1,9 @@
-package ru.clevertec.writer;
+package ru.clevertec.util.writer;
 
 
 import java.util.List;
 
 public interface WriterInPdf {
-
-    void write(String str, String filePath, String outputFilePath);
 
     <T> void write(T t, String filePath, String outputFilePath);
 

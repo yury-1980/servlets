@@ -1,9 +1,9 @@
-package ru.clevertec.valid.impl;
+package ru.clevertec.util.valid.impl;
 
 
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.exception.ClientDtoNotValidate;
-import ru.clevertec.valid.Validator;
+import ru.clevertec.util.valid.Validator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -13,7 +13,8 @@ public class ValidatorImpl implements Validator {
 
     @Override
     public void validateClientDto(ClientDto clientDto) throws ClientDtoNotValidate {
-        javax.validation.Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        javax.validation.Validator validator = Validation.buildDefaultValidatorFactory()
+                .getValidator();
 
         Set<ConstraintViolation<ClientDto>> violations = validator.validate(clientDto);
 

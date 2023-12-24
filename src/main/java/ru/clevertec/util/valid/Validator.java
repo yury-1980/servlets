@@ -1,4 +1,4 @@
-package ru.clevertec.valid;
+package ru.clevertec.util.valid;
 
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.exception.ClientDtoNotValidate;

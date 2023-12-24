@@ -1,4 +1,4 @@
-package ru.clevertec.reader;
+package ru.clevertec.util.reader;
 
 import java.util.Properties;
 

@@ -1,4 +1,4 @@
-package ru.clevertec.filter;
+package ru.clevertec.util.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

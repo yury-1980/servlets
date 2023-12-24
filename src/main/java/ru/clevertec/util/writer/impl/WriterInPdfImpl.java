@@ -1,4 +1,4 @@
-package ru.clevertec.writer.impl;
+package ru.clevertec.util.writer.impl;
 
 import com.google.gson.Gson;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -19,7 +19,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import ru.clevertec.writer.WriterInPdf;
+import ru.clevertec.util.writer.WriterInPdf;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -35,28 +35,6 @@ public class WriterInPdfImpl implements WriterInPdf {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final String FONT = "c:/Windows/Fonts/cambriai.ttf";
     private String date;
-
-    /**
-     * Запись текста в pdf файл.
-     *
-     * @param str            Входящий параметр - строка.
-     * @param filePath       Путь к файлу, для получения подложки.
-     * @param outputFilePath Путь к создаваемому файлу pdf.
-     */
-    @Override
-    public void write(String str, String filePath, String outputFilePath) {
-
-        try (PdfDocument pdfDocument = new PdfDocument(new PdfReader(filePath),
-                new PdfWriter(outputFilePath))) {
-            Document document = docPdf(pdfDocument);
-            document.add(new Paragraph(str));
-            document.add(new Paragraph(date).setTextAlignment(TextAlignment.RIGHT));
-
-            log.info("The PDF document has been successfully modified.");
-        } catch (IOException e) {
-            log.error("Error when editing PDF document! : " + e.getMessage());
-        }
-    }
 
     /**
      * Запись одного объекта в pdf файл.
@@ -105,7 +83,8 @@ public class WriterInPdfImpl implements WriterInPdf {
                     .forEach(list::add);
             document.add(list);
 
-            PdfFormXObject backgroundXObject = pdfDocument.getFirstPage().copyAsFormXObject(pdfDocument);
+            PdfFormXObject backgroundXObject = pdfDocument.getFirstPage()
+                    .copyAsFormXObject(pdfDocument);
 
             for (int i = 1; i <= pdfDocument.getNumberOfPages(); i++) {
                 PdfPage page = pdfDocument.getPage(i);

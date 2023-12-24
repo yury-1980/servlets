@@ -5,7 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.exception.ClientDtoNotValidate;
-import ru.clevertec.valid.Validator;
+import ru.clevertec.util.valid.Validator;
+import ru.clevertec.util.valid.impl.ValidatorImpl;
 
 import java.time.LocalDate;
 

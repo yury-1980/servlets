@@ -61,21 +61,3 @@ PUT - запрос: http://localhost:8080/v1/clients?id=78
 "surName": "Владимировна",
 "birthDay": "2000-01-01"
 }
-
-##### Метод для получения информации в виде XML:
-
-SerializatorXML serializatorXML = new SerializatorXMLImpl();
-String serialize = serializatorXML.serialize(clientDtoTwo);
-
-ClientDto clientDtoTwo = new ClientDto("Николай", "Николаев", "Николаевич",
-LocalDate.parse("2000-01-01"));
-
-##### Вывод: System.out.println("serialize = " + serialize);
-
-serialize = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<clientDto>
-<birthDay/>
-<clientName>Николай</clientName>
-<familyName>Николаев</familyName>
-<surName>Николаевич</surName>
-</clientDto>

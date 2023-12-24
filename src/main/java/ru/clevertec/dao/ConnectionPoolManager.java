@@ -1,8 +1,8 @@
 package ru.clevertec.dao;
 
 import com.zaxxer.hikari.HikariDataSource;
-import ru.clevertec.reader.ReaderConfig;
-import ru.clevertec.reader.impl.ReaderConfigImpl;
+import ru.clevertec.util.reader.ReaderConfig;
+import ru.clevertec.util.reader.impl.ReaderConfigImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;

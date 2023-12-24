@@ -2,7 +2,6 @@ package ru.clevertec.servlet;
 
 import com.google.gson.Gson;
 import ru.clevertec.config.Config;
-import ru.clevertec.config.ConfigurationListener;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
 import ru.clevertec.service.ClientService;
@@ -22,9 +21,11 @@ public class ClientServlet extends HttpServlet {
     private static final String ID = "id";
     private static final String PAGE_NUM = "pageNum";
     private static final String PAGE_SIZE = "pageSize";
-    private final ClientService clientService = ConfigurationListener.getClientService();
     private final Gson json = Config.getConfig()
             .getJson();
+
+    private final ClientService clientService = Config.getConfig()
+            .getClientService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

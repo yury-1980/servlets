@@ -9,7 +9,7 @@ import ru.clevertec.exception.ClientDtoNotValidate;
 import ru.clevertec.exception.ClientNotFoundException;
 import ru.clevertec.mapper.MapperClient;
 import ru.clevertec.service.ClientService;
-import ru.clevertec.valid.Validator;
+import ru.clevertec.util.valid.Validator;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ClientServiceImpl implements ClientService {
     private Validator validator;
 
     private static final long DEFAULT_PAGE_SIZE = 20L;
-    private static final long DEFAULT_NUM_PAGE = 1L;
+    private static final long DEFAULT_PAGE_NUM = 1L;
 
     /**
      * Ищет в Б.Д. клиента по его идентификатору.
@@ -49,22 +49,32 @@ public class ClientServiceImpl implements ClientService {
      */
     @Override
     public List<ClientDto> findByAll(Long pageNum, Long pageSize) {
+        return clientDao.findByAll()
+                .stream()
+                .skip(getNumSkip(pageNum, pageSize))
+                .limit(pageSize)
+                .map(mapperClient::toClientDto)
+                .toList();
+    }
+
+    /**
+     * Метод возвращает количество страниц.
+     *
+     * @param pageNum  Номер страницы.
+     * @param pageSize Размерность страницы.
+     * @return Количество пропускаемых страниц.
+     */
+    private long getNumSkip(Long pageNum, Long pageSize) {
 
         if (pageSize == null || pageSize <= 0) {
             pageSize = DEFAULT_PAGE_SIZE;
         }
 
         if (pageNum == null || pageNum <= 0) {
-            pageNum = DEFAULT_NUM_PAGE;
+            pageNum = DEFAULT_PAGE_NUM;
         }
 
-        long numSkip = (pageNum - 1L) * pageSize;
-
-        return clientDao.findByAll().stream()
-                .skip(numSkip)
-                .limit(pageSize)
-                .map(mapperClient::toClientDto)
-                .toList();
+        return (pageNum - 1L) * pageSize;
     }
 
     /**

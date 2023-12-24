@@ -28,7 +28,7 @@ public class ClientDaoImpl implements ClientDao {
 
         try {
             connection = ConnectionPoolManager.getConnection();
-            preparedStatement =  connection.prepareStatement(RequestsSQL.GET_CLIENT_ID);
+            preparedStatement = connection.prepareStatement(RequestsSQL.GET_CLIENT_ID);
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
 
@@ -38,7 +38,8 @@ public class ClientDaoImpl implements ClientDao {
             String clientName = resultSet.getString(2);
             String familyName = resultSet.getString(3);
             String surName = resultSet.getString(4);
-            LocalDate birthDay = resultSet.getDate(5).toLocalDate();
+            LocalDate birthDay = resultSet.getDate(5)
+                    .toLocalDate();
 
             client = new Client(clientId, clientName, familyName, surName, birthDay);
 
@@ -71,7 +72,8 @@ public class ClientDaoImpl implements ClientDao {
                 String clientName = resultSet.getString(2);
                 String familyName = resultSet.getString(3);
                 String surName = resultSet.getString(4);
-                LocalDate birthDay = resultSet.getDate(5).toLocalDate();
+                LocalDate birthDay = resultSet.getDate(5)
+                        .toLocalDate();
 
                 client = new Client(clientId, clientName, familyName, surName, birthDay);
                 clientList.add(client);

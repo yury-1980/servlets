@@ -10,8 +10,8 @@ import ru.clevertec.entity.Client;
 import ru.clevertec.mapper.MapperClient;
 import ru.clevertec.mapper.MapperClientImpl;
 import ru.clevertec.service.ClientService;
-import ru.clevertec.valid.Validator;
-import ru.clevertec.valid.impl.ValidatorImpl;
+import ru.clevertec.util.valid.Validator;
+import ru.clevertec.util.valid.impl.ValidatorImpl;
 
 import java.time.LocalDate;
 import java.util.List;
