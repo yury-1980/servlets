@@ -1,0 +1,6 @@
+url: jdbc:postgresql://localhost:5432/Bank
+username: postgres
+password: postgres
+driver: org.postgresql.Driver
+maxTotalConnections: 5
+maxIdleConnections: 4

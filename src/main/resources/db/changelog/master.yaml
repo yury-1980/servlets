@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: bank
+      changes:
+        - sqlFile:
+            path: /db/changelog/createTable.sql

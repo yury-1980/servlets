@@ -1,0 +1,61 @@
+create table bank
+(
+    id        bigserial not null
+        constraint bank_pk
+            primary key,
+    bank_name varchar                                               not null
+        unique
+);
+
+alter table bank
+    owner to postgres;
+
+create table client
+(
+    id          bigserial not null
+        constraint client_pk
+            primary key,
+    client_name varchar(50)                                                not null
+        unique
+);
+
+alter table client
+    owner to postgres;
+
+create table bank_client
+(
+    id        bigserial
+        constraint bank_client_pk
+            primary key,
+    bank_id   bigint not null
+        constraint bank_client_fk
+            references bank,
+    client_id bigint not null
+        constraint client_bank___fk
+            references client
+);
+
+alter table bank_client
+    owner to postgres;
+
+create table account
+(
+    id        bigserial
+        constraint account_pk
+            primary key,
+    account   bigserial
+        unique,
+    client_id bigint               not null
+        constraint account_client_id_fk
+            references client,
+    bank_id   bigint               not null
+        constraint account_bank___fk
+            references bank,
+    balance   integer default 1000 not null
+);
+
+alter table account
+    owner to postgres;
+
+
+

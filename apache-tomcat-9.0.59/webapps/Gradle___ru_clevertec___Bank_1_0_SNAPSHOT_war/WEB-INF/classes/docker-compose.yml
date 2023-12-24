@@ -1,0 +1,23 @@
+#docker run --name some-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=final_01 -e POSTGRES_USER=postgres #-p 5433:5432 -d postgres:14.5
+
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres:14
+    container_name: bank_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: Bank
+      POSTGRES_USER: postgres
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 8080:8080

@@ -1,0 +1,172 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1693911496705-1
+      author: 71764 (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: bank_pk
+                  name: id
+                  startWith: 6
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: bank_name
+                  type: VARCHAR
+            tableName: bank
+  - changeSet:
+      id: 1693911496705-2
+      author: 71764 (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: client_pk
+                  name: id
+                  startWith: 21
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: client_name
+                  type: VARCHAR(50)
+            tableName: client
+  - changeSet:
+      id: 1693911496705-3
+      author: 71764 (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: bank_client_pk
+                  name: id
+                  startWith: 23
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: bank_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: client_id
+                  type: BIGINT
+            tableName: bank_client
+  - changeSet:
+      id: 1693911496705-4
+      author: 71764 (generated)
+      changes:
+        - addUniqueConstraint:
+            columnNames: bank_name
+            constraintName: bank_bank_name_key
+            tableName: bank
+  - changeSet:
+      id: 1693911496705-5
+      author: 71764 (generated)
+      changes:
+        - addUniqueConstraint:
+            columnNames: client_name
+            constraintName: client_client_name_key
+            tableName: client
+  - changeSet:
+      id: 1693911496705-6
+      author: 71764 (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: account_pk
+                  name: id
+                  startWith: 23
+                  type: BIGINT
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                  name: account
+                  startWith: 23
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: client_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueNumeric: 1000
+                  name: balance
+                  type: INTEGER
+            tableName: account
+  - changeSet:
+      id: 1693911496705-7
+      author: 71764 (generated)
+      changes:
+        - addUniqueConstraint:
+            columnNames: account
+            constraintName: account_account_key
+            tableName: account
+  - changeSet:
+      id: 1693911496705-8
+      author: 71764 (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: account
+            constraintName: account_client_id_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: client
+            validate: true
+  - changeSet:
+      id: 1693911496705-9
+      author: 71764 (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: bank_id
+            baseTableName: bank_client
+            constraintName: bank_client_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: bank
+            validate: true
+  - changeSet:
+      id: 1693911496705-10
+      author: 71764 (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: bank_client
+            constraintName: client_bank___fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: client
+            validate: true
