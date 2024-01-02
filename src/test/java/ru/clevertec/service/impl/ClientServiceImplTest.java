@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.clevertec.dao.ClientDao;
-import ru.clevertec.dao.impl.ClientDaoImpl;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
 import ru.clevertec.mapper.MapperClient;
@@ -53,7 +52,7 @@ class ClientServiceImplTest {
 
         pageNum = 1L;
         pageSize = 1L;
-        clientDao = new ClientDaoImpl();
+//        clientDao = new ClientDaoImpl();
         mapperClient = new MapperClientImpl();
         validator = new ValidatorImpl();
         service = new ClientServiceImpl(clientDao, mapperClient, validator);

@@ -32,7 +32,7 @@ class ClientServletTest {
 
     @BeforeEach
     void setUp() {
-        clientServlet = new ClientServlet();
+//        clientServlet = new ClientServlet();
         StringWriter stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
     }

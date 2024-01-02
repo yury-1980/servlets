@@ -1,6 +1,7 @@
 package ru.clevertec.util.valid.impl;
 
 
+import org.springframework.stereotype.Component;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.exception.ClientDtoNotValidate;
 import ru.clevertec.util.valid.Validator;
@@ -9,6 +10,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import java.util.Set;
 
+@Component
 public class ValidatorImpl implements Validator {
 
     @Override

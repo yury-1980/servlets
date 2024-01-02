@@ -1,7 +1,7 @@
 package ru.clevertec.service.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.clevertec.dao.ClientDao;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Отправляет и получает данные из базы данных.
  */
-@NoArgsConstructor
 @AllArgsConstructor
+@Service
 public class ClientServiceImpl implements ClientService {
 
-    private ClientDao clientDao;
-    private MapperClient mapperClient;
-    private Validator validator;
+    private final ClientDao clientDao;
+    private final MapperClient mapperClient;
+    private final Validator validator;
 
     private static final long DEFAULT_PAGE_SIZE = 20L;
     private static final long DEFAULT_PAGE_NUM = 1L;

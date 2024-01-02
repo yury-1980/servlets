@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MapperClient {
 
     ClientDto toClientDto(Client client);

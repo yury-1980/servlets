@@ -1,11 +1,14 @@
 package ru.clevertec.servlet;
 
 import com.google.gson.Gson;
-import ru.clevertec.config.Config;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.clevertec.config.SpringConfig;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
 import ru.clevertec.service.ClientService;
+import ru.clevertec.service.impl.ClientServiceImpl;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,17 +18,23 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+
 @WebServlet("/v1/clients")
 public class ClientServlet extends HttpServlet {
 
     private static final String ID = "id";
     private static final String PAGE_NUM = "pageNum";
     private static final String PAGE_SIZE = "pageSize";
-    private final Gson json = Config.getConfig()
-            .getJson();
+    private Gson json;
+    private ClientService clientService;
 
-    private final ClientService clientService = Config.getConfig()
-            .getClientService();
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        clientService = context.getBean("clientServiceImpl", ClientServiceImpl.class);
+        json = context.getBean("json", Gson.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
