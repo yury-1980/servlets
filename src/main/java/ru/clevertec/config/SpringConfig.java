@@ -12,9 +12,10 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
+import ru.clevertec.cache.impl.LRUCacheImpl;
 import ru.clevertec.util.gson.LocalDateAdapter;
 import ru.clevertec.util.gson.LocalDateSerializer;
 import ru.clevertec.util.gson.OffsetDateTimeAdapter;
@@ -28,7 +29,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Configuration
-@ComponentScan("ru.clevertec")
+@EnableAspectJAutoProxy
 @PropertySource("classpath:application.properties")
 public class SpringConfig {
 
@@ -39,7 +40,7 @@ public class SpringConfig {
     private String changeLog;
 
     @Value("${capacity}")
-    private String capacity;
+    private int capacity;
 
     @Value("${url}")
     private String url;
@@ -53,6 +54,11 @@ public class SpringConfig {
     @Value("${driver}")
     private String driver;
     private final HikariDataSource DATA_SOURCE = new HikariDataSource();
+
+    @Bean
+    public <V> LRUCacheImpl<V> cache() {
+        return new LRUCacheImpl<V>(capacity);
+    }
 
     @Bean
     public Gson json() {

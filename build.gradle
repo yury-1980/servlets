@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'io.freefair.aspectj.post-compile-weaving' version '8.0.0-rc4'
     id "io.freefair.lombok" version "6.5.1"
     id 'org.liquibase.gradle' version '2.2.0'
     id 'war'
@@ -37,8 +36,12 @@ dependencies {
     implementation 'org.codehaus.mojo:jaxb2-maven-plugin:3.1.0'
     implementation 'com.itextpdf:itext7-core:7.2.4'
 
-    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    runtimeOnly 'org.aspectj:aspectjweaver:1.9.21'
+    runtimeOnly 'org.aspectj:aspectjrt:1.9.21'
+
     implementation 'org.aspectj:aspectjrt:1.9.19'
+
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
     implementation "org.postgresql:postgresql:${postgresqlVersion}"
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.zaxxer:HikariCP:4.0.3'

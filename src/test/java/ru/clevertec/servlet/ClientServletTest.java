@@ -1,10 +1,17 @@
 package ru.clevertec.servlet;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.clevertec.service.ClientService;
+import ru.clevertec.util.gson.LocalDateAdapter;
+import ru.clevertec.util.gson.LocalDateSerializer;
+import ru.clevertec.util.gson.OffsetDateTimeAdapter;
+import ru.clevertec.util.gson.OffsetDateTimeSerializer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,6 +34,9 @@ class ClientServletTest {
     private HttpServletRequest mockRequest;
 
     @Mock
+    ClientService clientService;
+
+    @Mock
     private HttpServletResponse mockResponse;
     private ClientServlet clientServlet;
     private PrintWriter printWriter;
@@ -32,7 +44,13 @@ class ClientServletTest {
 
     @BeforeEach
     void setUp() {
-//        clientServlet = new ClientServlet();
+        Gson json = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeAdapter())
+                .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                .registerTypeAdapter(OffsetDateTime.class, new OffsetDateTimeSerializer())
+                .create();
+        clientServlet = new ClientServlet(json, clientService);
         StringWriter stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
     }

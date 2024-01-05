@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 class ValidatorImplTest {
 
-    Validator validator;
+    private Validator validator;
 
     @BeforeEach
     void setUp() {

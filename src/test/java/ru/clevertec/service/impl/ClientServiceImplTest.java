@@ -1,9 +1,12 @@
 package ru.clevertec.service.impl;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.clevertec.dao.ClientDao;
+import ru.clevertec.dao.impl.ClientDaoImpl;
 import ru.clevertec.dto.ClientDto;
 import ru.clevertec.entity.Client;
 import ru.clevertec.mapper.MapperClient;
@@ -12,23 +15,37 @@ import ru.clevertec.service.ClientService;
 import ru.clevertec.util.valid.Validator;
 import ru.clevertec.util.valid.impl.ValidatorImpl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 class ClientServiceImplTest {
 
-    Client client;
-    ClientDao clientDao;
-    MapperClient mapperClient;
-    Validator validator;
-    ClientDto clientDto;
-    ClientDto expected;
-    ClientService service;
-    Long pageNum;
-    Long pageSize;
+    private MapperClient mapperClient;
+    private ClientService service;
+    private ClientDto clientDto;
+    private ClientDto expected;
+    private Long pageSize;
+    private Client client;
+    private Long pageNum;
+    private final HikariDataSource DATA_SOURCE = new HikariDataSource();
+
+    @BeforeAll
+    static void setBef() throws SQLException {
+
+    }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws SQLException {
+        DATA_SOURCE.setJdbcUrl("jdbc:postgresql://localhost:5432/Cache");
+        DATA_SOURCE.setUsername("postgres");
+        DATA_SOURCE.setPassword("postgres");
+        DATA_SOURCE.setDriverClassName("org.postgresql.Driver");
+        DATA_SOURCE.setAutoCommit(false);
+
+        Connection connection = DATA_SOURCE.getConnection();
+
         client = Client.builder()
                 .clientName("Иван")
                 .familyName("Иванов")
@@ -52,9 +69,9 @@ class ClientServiceImplTest {
 
         pageNum = 1L;
         pageSize = 1L;
-//        clientDao = new ClientDaoImpl();
+        ClientDao clientDao = new ClientDaoImpl(connection);
+        Validator validator = new ValidatorImpl();
         mapperClient = new MapperClientImpl();
-        validator = new ValidatorImpl();
         service = new ClientServiceImpl(clientDao, mapperClient, validator);
 
     }
@@ -87,8 +104,8 @@ class ClientServiceImplTest {
 
     @Test
     void shouldCreateClientAndReturnClientDto() {
-        Client clientDto1 = service.create(expected);
-        ClientDto actual = mapperClient.toClientDto(clientDto1);
+        client = service.create(expected);
+        ClientDto actual = mapperClient.toClientDto(client);
 
         Assertions.assertEquals(expected, actual);
     }
