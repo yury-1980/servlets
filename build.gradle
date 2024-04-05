@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'io.freefair.aspectj.post-compile-weaving' version '8.0.0-rc4'
+    id "io.freefair.lombok" version "6.5.1"
+    id 'org.liquibase.gradle' version '2.2.0'
+    id 'war'
+}
+
+group = 'ru.clevertec'
+version = '1.0-SNAPSHOT'
+
+compileJava.options.encoding = 'UTF-8'
+
+java {
+    sourceCompatibility = JavaLanguageVersion.of(17)
+    targetCompatibility = JavaLanguageVersion.of(17)
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    mapstructVersion = '1.5.5.Final'
+    postgresqlVersion = '42.3.8'
+    junitVersion = '5.9.2'
+    mockitoVersion = '5.6.0'
+}
+
+dependencies {
+    implementation 'org.codehaus.mojo:jaxb2-maven-plugin:3.1.0'
+    implementation 'com.itextpdf:itext7-core:7.2.4'
+
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    implementation 'org.aspectj:aspectjrt:1.9.19'
+    implementation "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+
+    implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
+    implementation 'javax.el:javax.el-api:3.0.1-b06'
+    implementation 'org.glassfish:javax.el:3.0.0'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+    implementation 'org.liquibase:liquibase-core:4.23.1'
+
+    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.23.1'
+    liquibaseRuntime "org.postgresql:postgresql:${postgresqlVersion}"
+
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.apache.commons:commons-dbcp2:2.9.0'
+
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}

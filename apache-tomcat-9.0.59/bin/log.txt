@@ -1,0 +1,4 @@
+Sat Nov 04 21:21:37 MSK 2023 Method 'getAccountAll' called with arguments [Vasya]
+Sat Nov 04 21:21:37 MSK 2023 Method 'getAccountAll' returned result: [Account(id=35, account=35, clientId=1, bankId=1, balance=1000), Account(id=36, account=36, clientId=1, bankId=2, balance=1000), Account(id=2, account=2, clientId=1, bankId=2, balance=610), Account(id=1, account=1, clientId=1, bankId=1, balance=807)]
+Sat Nov 04 21:44:44 MSK 2023 Method 'getAccountAll' called with arguments [Vasya]
+Sat Nov 04 21:44:44 MSK 2023 Method 'getAccountAll' returned result: [Account(id=35, account=35, clientId=1, bankId=1, balance=1000), Account(id=36, account=36, clientId=1, bankId=2, balance=1000), Account(id=2, account=2, clientId=1, bankId=2, balance=610), Account(id=1, account=1, clientId=1, bankId=1, balance=807)]
